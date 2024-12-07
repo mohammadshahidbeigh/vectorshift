@@ -1,0 +1,10 @@
+{
+  "venvPath": ".",
+  "venv": "venv",
+  "pythonVersion": "3.8",
+  "analysis": {
+    "autoImportCompletions": true,
+    "useLibraryCodeForTypes": true,
+    "diagnosticMode": "workspace"
+  }
+} 
