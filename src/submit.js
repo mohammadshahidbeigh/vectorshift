@@ -10,7 +10,7 @@ export const SubmitButton = () => {
   const handleSubmit = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch("/pipelines/parse", {
+      const response = await fetch("http://localhost:8000/pipelines/parse", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -19,6 +19,10 @@ export const SubmitButton = () => {
       });
 
       const data = await response.json();
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
 
       alert(
         `Pipeline Analysis:\n\n` +
