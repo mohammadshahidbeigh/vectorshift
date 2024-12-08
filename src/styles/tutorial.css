@@ -1,0 +1,131 @@
+.tutorial-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tutorial-card {
+  position: absolute;
+  background: #2c3e50;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+}
+
+.tutorial-card h3 {
+  margin: 0 0 16px 0;
+  color: #3498db;
+  font-size: 1.5em;
+}
+
+.tutorial-card p {
+  margin: 0 0 20px 0;
+  line-height: 1.6;
+  color: #ecf0f1;
+}
+
+.tutorial-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.tutorial-button {
+  background: #34495e;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.tutorial-button:hover {
+  background: #2c3e50;
+  transform: translateY(-2px);
+}
+
+.tutorial-button.primary {
+  background: #3498db;
+}
+
+.tutorial-button.primary:hover {
+  background: #2980b9;
+}
+
+.tutorial-progress {
+  display: flex;
+  gap: 8px;
+  margin: 0 16px;
+}
+
+.progress-dot {
+  width: 8px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.progress-dot.active {
+  background: #3498db;
+  transform: scale(1.2);
+}
+
+.node-remove-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.3s ease;
+}
+
+.node-remove-btn:hover {
+  background: rgba(231, 76, 60, 0.8);
+  transform: scale(1.1);
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  padding: 12px;
+  border-radius: 50%;
+  background: rgba(52, 152, 219, 0.2);
+  border: 2px solid rgba(52, 152, 219, 0.3);
+  cursor: pointer;
+  font-size: 20px;
+  transition: all 0.3s ease;
+  color: var(--text-color);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  background: rgba(52, 152, 219, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}

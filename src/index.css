@@ -1,13 +1,179 @@
+:root[data-theme="light"] {
+  --bg-color: #f5f7fa;
+  --text-color: #2c3e50;
+  --node-bg: #ffffff;
+  --node-border: #e0e0e0;
+}
+
+:root[data-theme="dark"] {
+  --bg-color: #1a1a1a;
+  --text-color: #ffffff;
+  --node-bg: #2c3e50;
+  --node-border: rgba(255, 255, 255, 0.1);
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.app-container {
+  min-height: 100vh;
+  padding: 20px;
+  background: radial-gradient(
+    circle at center,
+    rgba(52, 152, 219, 0.1) 0%,
+    rgba(0, 0, 0, 0) 70%
+  );
+}
+
+.react-flow__pane {
+  cursor: default !important;
+}
+
+.react-flow__node {
+  font-size: 14px;
+  background: rgba(44, 62, 80, 0.95);
+  border-radius: 16px;
+  padding: 15px;
+  border: 2px solid rgba(52, 152, 219, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+}
+
+.react-flow__node:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  border-color: #3498db;
+}
+
+.node-input {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: white;
+  padding: 8px 12px;
+  width: 90%;
+  margin: 4px 0;
+  transition: all 0.3s ease;
+}
+
+.node-input:focus {
+  outline: none;
+  border-color: #3498db;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.node-select {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: white;
+  padding: 8px 12px;
+  width: 100%;
+  margin: 4px 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.node-select:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+.node-select option {
+  color: #fff;
+  background: #2c3c4d;
+}
+.react-flow__handle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #3498db;
+  border: 2px solid #fff;
+  transition: all 0.3s ease;
+}
+
+.react-flow__handle:hover {
+  background-color: #e74c3c;
+  transform: scale(1.2);
+}
+
+.react-flow__edge-path {
+  stroke: #3498db;
+  stroke-width: 3;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2));
+}
+
+.react-flow__edge.animated path {
+  stroke-dasharray: 5;
+  animation: dashdraw 0.5s linear infinite;
+}
+
+.react-flow__background {
+  background-color: transparent;
+}
+
+.react-flow__controls {
+  background: rgba(44, 62, 80, 0.9);
+  border-radius: 12px;
+  padding: 8px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.react-flow__controls button {
+  background: rgba(52, 73, 94, 0.9);
+  color: white;
+  border: none;
+  margin: 4px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.react-flow__controls button:hover {
+  background: #3498db;
+  transform: translateY(-1px);
+}
+
+@keyframes dashdraw {
+  from {
+    stroke-dashoffset: 10;
+  }
+}
+
+/* Toast Customization */
+.Toastify__toast {
+  border-radius: 12px;
+  padding: 16px;
+  background: rgba(44, 62, 80, 0.95);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.Toastify__toast-body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #ffffff;
+}
+
+.Toastify__progress-bar {
+  background: linear-gradient(to right, #3498db, #e74c3c);
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.node-container {
+  background: var(--node-bg);
+  border-color: var(--node-border);
 }

@@ -1,17 +1,15 @@
 import {BaseNode} from "./BaseNode";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 
 export const TemplateNode = ({id, data}) => {
   const [template, setTemplate] = useState(data?.template || "");
-  const [variables, setVariables] = useState(data?.variables || []);
+  const [variables, setVariables] = useState([]);
 
-  // Extract variables from template string
-  const updateVariables = (newTemplate) => {
-    const matches = newTemplate.match(/\{\{([^}]+)\}\}/g) || [];
+  useEffect(() => {
+    const matches = template.match(/\{\{([^}]+)\}\}/g) || [];
     const vars = matches.map((match) => match.slice(2, -2).trim());
     setVariables([...new Set(vars)]);
-    setTemplate(newTemplate);
-  };
+  }, [template]);
 
   return (
     <BaseNode
@@ -19,15 +17,22 @@ export const TemplateNode = ({id, data}) => {
       title="Template"
       inputs={variables.map((v) => ({id: v}))}
       outputs={[{id: "output"}]}
+      type="template"
+      data={data}
     >
       <textarea
         className="node-input"
         value={template}
-        onChange={(e) => updateVariables(e.target.value)}
+        onChange={(e) => setTemplate(e.target.value)}
         placeholder="Enter template with {{variables}}"
-        rows={4}
+        style={{
+          minHeight: "80px",
+          resize: "vertical",
+        }}
       />
-      <div>Variables: {variables.join(", ")}</div>
+      {variables.length > 0 && (
+        <div className="variables-list">Variables: {variables.join(", ")}</div>
+      )}
     </BaseNode>
   );
 };

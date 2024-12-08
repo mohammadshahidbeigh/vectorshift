@@ -7,10 +7,16 @@ export const OutputNode = ({id, data}) => {
   const [currName, setCurrName] = useState(
     data?.outputName || id.replace("customOutput-", "output_")
   );
-  const [outputType, setOutputType] = useState(data.outputType || "Text");
+  const [outputType, setOutputType] = useState(data?.outputType || "Text");
 
   return (
-    <BaseNode id={id} title="Output" inputs={[{id: "value"}]}>
+    <BaseNode
+      id={id}
+      title="Output"
+      inputs={[{id: "value"}]}
+      type="output"
+      data={data}
+    >
       <div>
         <input
           className="node-input"

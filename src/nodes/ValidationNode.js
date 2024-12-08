@@ -18,6 +18,8 @@ export const ValidationNode = ({id, data}) => {
       title="Validation"
       inputs={[{id: "input"}]}
       outputs={[{id: "valid"}, {id: "invalid"}]}
+      type="validation"
+      data={data}
     >
       <div>
         <input
@@ -28,7 +30,7 @@ export const ValidationNode = ({id, data}) => {
           placeholder="Add validation rule"
         />
         <button onClick={addRule}>Add Rule</button>
-        <ul>
+        <ul className="rules-list">
           {rules.map((rule, index) => (
             <li key={index}>{rule}</li>
           ))}

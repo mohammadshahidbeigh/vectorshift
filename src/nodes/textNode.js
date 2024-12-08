@@ -8,24 +8,10 @@ export const TextNode = ({id, data}) => {
   const [variables, setVariables] = useState([]);
   const textareaRef = useRef(null);
 
-  // Function to extract variables from text
-  const extractVariables = (text) => {
-    const matches = text.match(/\{\{([^}]+)\}\}/g) || [];
-    return [...new Set(matches.map((match) => match.slice(2, -2).trim()))];
-  };
-
-  // Update variables when text changes
   useEffect(() => {
-    const newVars = extractVariables(currText);
-    setVariables(newVars);
-  }, [currText]);
-
-  // Auto-resize textarea
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-    }
+    const matches = currText.match(/\{\{([^}]+)\}\}/g) || [];
+    const vars = matches.map((match) => match.slice(2, -2).trim());
+    setVariables([...new Set(vars)]);
   }, [currText]);
 
   return (
@@ -34,6 +20,8 @@ export const TextNode = ({id, data}) => {
       title="Text"
       inputs={variables.map((v) => ({id: v}))}
       outputs={[{id: "output"}]}
+      type="text"
+      data={data}
     >
       <textarea
         ref={textareaRef}
@@ -42,10 +30,8 @@ export const TextNode = ({id, data}) => {
         onChange={(e) => setCurrText(e.target.value)}
         placeholder="Enter text with {{variables}}"
         style={{
-          minHeight: "60px",
-          width: "100%",
-          resize: "none",
-          overflow: "hidden",
+          minHeight: "80px",
+          resize: "vertical",
         }}
       />
       {variables.length > 0 && (

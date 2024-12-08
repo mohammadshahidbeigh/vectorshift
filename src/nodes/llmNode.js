@@ -9,6 +9,8 @@ export const LLMNode = ({id, data}) => {
       title="LLM"
       inputs={[{id: "system"}, {id: "prompt"}]}
       outputs={[{id: "response"}]}
+      type="llm"
+      data={data}
     >
       <div>
         <span>This is a LLM.</span>

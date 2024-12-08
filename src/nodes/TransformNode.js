@@ -10,6 +10,8 @@ export const TransformNode = ({id, data}) => {
       title="Transform"
       inputs={[{id: "input"}]}
       outputs={[{id: "output"}]}
+      type="transform"
+      data={data}
     >
       <select
         className="node-select"
@@ -20,6 +22,8 @@ export const TransformNode = ({id, data}) => {
         <option value="uppercase">To Uppercase</option>
         <option value="lowercase">To Lowercase</option>
         <option value="capitalize">Capitalize</option>
+        <option value="trim">Trim</option>
+        <option value="number">To Number</option>
       </select>
     </BaseNode>
   );

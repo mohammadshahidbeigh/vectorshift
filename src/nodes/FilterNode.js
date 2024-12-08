@@ -10,6 +10,7 @@ export const FilterNode = ({id, data}) => {
       title="Filter"
       inputs={[{id: "input"}]}
       outputs={[{id: "output"}]}
+      type="filter"
     >
       <input
         className="node-input"

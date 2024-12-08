@@ -1,70 +1,118 @@
-# Getting Started with Create React App
+# Pipeline Builder
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A visual pipeline builder for creating and validating data processing workflows.
 
-## Available Scripts
+## Usage
 
-In the project directory, you can run:
+1. **Creating Nodes**
 
-### `npm start`
+   - Drag nodes from the toolbar
+   - Configure node settings
+   - Connect nodes using handles
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+2. **Pipeline Validation**
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+   - Click Submit to validate
+   - Check for DAG compliance
+   - Review node connections
 
-### `npm test`
+3. **Theme Customization**
+   - Toggle between light/dark themes
+   - Custom node styling per type
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Architecture Decisions
 
-### `npm run build`
+1. **Node Abstraction**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+   - BaseNode provides common functionality
+   - Specialized nodes extend base functionality
+   - Consistent interface across node types
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. **State Management**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+   - Centralized state with Zustand
+   - Immutable updates for reliability
+   - Clear action patterns
 
-### `npm run eject`
+3. **Error Handling**
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+   - Graceful frontend error display
+   - Detailed backend error messages
+   - User-friendly notifications
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+4. **UI/UX**
+   - Interactive tutorial for new users
+   - Consistent design language
+   - Responsive layout
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Frontend (React)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+The frontend is built with React and uses several key libraries:
 
-## Learn More
+- **React Flow**: For the interactive node-based interface
+- **Zustand**: For state management
+- **Framer Motion**: For animations
+- **React Toastify**: For notifications
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### Key Components
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. **Nodes**
 
-### Code Splitting
+   - BaseNode: Abstract component providing common node functionality
+   - Specialized Nodes:
+     - InputNode: Handles data input
+     - OutputNode: Handles data output
+     - TextNode: Text processing with variable support
+     - LLMNode: Language model integration
+     - TransformNode: Data transformation
+     - MergeNode: Combines multiple inputs
+     - FilterNode: Filters data based on conditions
+     - ValidationNode: Validates data against rules
+     - TemplateNode: Template-based text processing
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+2. **State Management**
 
-### Analyzing the Bundle Size
+   - Uses Zustand for centralized state
+   - Handles node creation, deletion, and updates
+   - Manages connections between nodes
+   - Tracks pipeline validation state
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+3. **UI Components**
+   - Tutorial: Interactive onboarding
+   - ThemeToggle: Light/dark theme switching
+   - PipelineToolbar: Node creation tools
+   - PipelineUI: Main workspace
 
-### Making a Progressive Web App
+### Backend (FastAPI)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+The backend provides pipeline validation and processing:
 
-### Advanced Configuration
+- DAG validation
+- Node count verification
+- Edge validation
+- Error handling
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Setup
 
-### Deployment
+### Frontend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+```bash
+cd frontend
+npm install
+npm start
+```
 
-### `npm run build` fails to minify
+### Backend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
+
+### Backend Tests
+
+```bash
+cd backend tests
+pytest
+```

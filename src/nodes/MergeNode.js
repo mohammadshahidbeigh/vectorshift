@@ -10,6 +10,8 @@ export const MergeNode = ({id, data}) => {
       title="Merge"
       inputs={[{id: "input1"}, {id: "input2"}]}
       outputs={[{id: "output"}]}
+      type="merge"
+      data={data}
     >
       <select
         className="node-select"
