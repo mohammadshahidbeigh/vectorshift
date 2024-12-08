@@ -1,77 +1,85 @@
 // store.js
 
-import {createWithEqualityFn} from "zustand/traditional";
-import {shallow} from "zustand/shallow";
-import {
-  addEdge,
-  applyNodeChanges,
-  applyEdgeChanges,
-  MarkerType,
-} from "reactflow";
+import { create } from "zustand";
+import { shallow } from "zustand/shallow";
+import { addEdge, applyNodeChanges, applyEdgeChanges, MarkerType } from "reactflow";
 
-export const useStore = createWithEqualityFn(
+// Zustand store for managing nodes, edges, and their interactions
+export const useStore = create(
   (set, get) => ({
+    // State
     nodes: [],
     edges: [],
     nodeIDs: {},
+
+    // Utility function to generate unique node IDs by type
     getNodeID: (type) => {
-      const newIDs = {...get().nodeIDs};
-      if (newIDs[type] === undefined) {
+      const newIDs = { ...get().nodeIDs };
+      if (!newIDs[type]) {
         newIDs[type] = 0;
       }
       newIDs[type] += 1;
-      set({nodeIDs: newIDs});
+      set({ nodeIDs: newIDs });
       return `${type}-${newIDs[type]}`;
     },
+
+    // Add a new node to the state
     addNode: (node) => {
-      set({
-        nodes: [...get().nodes, node],
-      });
+      set((state) => ({
+        nodes: [...state.nodes, node],
+      }));
     },
+
+    // Remove a node and its associated edges
     removeNode: (nodeId) => {
       console.log("Store: Removing node:", nodeId);
-      const currentState = get();
-
-      set({
-        nodes: currentState.nodes.filter((node) => node.id !== nodeId),
-        edges: currentState.edges.filter(
+      set((state) => ({
+        nodes: state.nodes.filter((node) => node.id !== nodeId),
+        edges: state.edges.filter(
           (edge) => edge.source !== nodeId && edge.target !== nodeId
         ),
-      });
+      }));
     },
+
+    // Handle node changes (e.g., dragging, resizing)
     onNodesChange: (changes) => {
-      set({
-        nodes: applyNodeChanges(changes, get().nodes),
-      });
+      set((state) => ({
+        nodes: applyNodeChanges(changes, state.nodes),
+      }));
     },
+
+    // Handle edge changes (e.g., deletion, reconnection)
     onEdgesChange: (changes) => {
-      set({
-        edges: applyEdgeChanges(changes, get().edges),
-      });
+      set((state) => ({
+        edges: applyEdgeChanges(changes, state.edges),
+      }));
     },
+
+    // Handle new connections between nodes
     onConnect: (connection) => {
-      set({
+      set((state) => ({
         edges: addEdge(
           {
             ...connection,
             type: "smoothstep",
             animated: true,
-            markerEnd: {type: MarkerType.Arrow, height: "20px", width: "20px"},
+            markerEnd: { type: MarkerType.Arrow, height: 20, width: 20 },
           },
-          get().edges
+          state.edges
         ),
-      });
+      }));
     },
+
+    // Update specific fields in a node's data
     updateNodeField: (nodeId, fieldName, fieldValue) => {
-      set({
-        nodes: get().nodes.map((node) => {
-          if (node.id === nodeId) {
-            node.data = {...node.data, [fieldName]: fieldValue};
-          }
-          return node;
-        }),
-      });
+      set((state) => ({
+        nodes: state.nodes.map((node) =>
+          node.id === nodeId
+            ? { ...node, data: { ...node.data, [fieldName]: fieldValue } }
+            : node
+        ),
+      }));
     },
   }),
-  shallow
+  shallow // Use shallow for efficient state comparison
 );
