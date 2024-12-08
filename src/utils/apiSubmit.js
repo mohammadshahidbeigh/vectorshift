@@ -1,6 +1,6 @@
 // submit.js
 
-import {useStore} from "./store";
+import {useStore} from "../state/store";
 import {useState} from "react";
 import {toast} from "react-toastify";
 

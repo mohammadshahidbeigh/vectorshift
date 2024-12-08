@@ -4,17 +4,17 @@
 
 import {useState, useRef, useCallback} from "react";
 import ReactFlow, {Controls, Background, MiniMap} from "reactflow";
-import {useStore} from "./store";
+import {useStore} from "../state/store";
 import {shallow} from "zustand/shallow";
-import {InputNode} from "./nodes/inputNode";
-import {LLMNode} from "./nodes/llmNode";
-import {OutputNode} from "./nodes/outputNode";
-import {TextNode} from "./nodes/textNode";
-import {FilterNode} from "./nodes/FilterNode";
-import {TemplateNode} from "./nodes/TemplateNode";
-import {ValidationNode} from "./nodes/ValidationNode";
-import {TransformNode} from "./nodes/TransformNode";
-import {MergeNode} from "./nodes/MergeNode";
+import {InputNode} from "../components/nodes/inputNode";
+import {LLMNode} from "../components/nodes/llmNode";
+import {OutputNode} from "../components/nodes/outputNode";
+import {TextNode} from "../components/nodes/textNode";
+import {FilterNode} from "../components/nodes/FilterNode";
+import {TemplateNode} from "../components/nodes/TemplateNode";
+import {ValidationNode} from "../components/nodes/ValidationNode";
+import {TransformNode} from "../components/nodes/TransformNode";
+import {MergeNode} from "../components/nodes/MergeNode";
 
 import "reactflow/dist/style.css";
 
