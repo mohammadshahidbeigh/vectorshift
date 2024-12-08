@@ -5,7 +5,6 @@
 import {useState, useRef, useCallback} from "react";
 import ReactFlow, {Controls, Background, MiniMap} from "reactflow";
 import {useStore} from "../state/store";
-import {shallow} from "zustand/shallow";
 import {InputNode} from "../components/nodes/inputNode";
 import {LLMNode} from "../components/nodes/llmNode";
 import {OutputNode} from "../components/nodes/outputNode";
@@ -32,50 +31,38 @@ const nodeTypes = {
   merge: MergeNode,
 };
 
-const selector = (state) => ({
-  nodes: state.nodes,
-  edges: state.edges,
-  getNodeID: state.getNodeID,
-  addNode: state.addNode,
-  removeNode: state.removeNode,
-  onNodesChange: state.onNodesChange,
-  onEdgesChange: state.onEdgesChange,
-  onConnect: state.onConnect,
-});
-
 export const PipelineUI = () => {
   const reactFlowWrapper = useRef(null);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
-  const {
-    nodes,
-    edges,
-    getNodeID,
-    addNode,
-    onNodesChange,
-    onEdgesChange,
-    onConnect,
-  } = useStore(selector, shallow);
+  
+  // Get store values and actions
+  const nodes = useStore((state) => state.nodes);
+  const edges = useStore((state) => state.edges);
+  const onNodesChange = useStore((state) => state.onNodesChange);
+  const onEdgesChange = useStore((state) => state.onEdgesChange);
+  const onConnect = useStore((state) => state.onConnect);
+  const addNode = useStore((state) => state.addNode);
+  const getNodeID = useStore((state) => state.getNodeID);
+  const handleRemoveNode = useStore((state) => state.removeNode);
 
-  const getInitNodeData = (nodeID, type) => {
-    let nodeData = {id: nodeID, nodeType: `${type}`};
-    return nodeData;
-  };
+  const getInitNodeData = useCallback((nodeID, type) => {
+    return { id: nodeID, nodeType: `${type}` };
+  }, []);
 
   const onDrop = useCallback(
     (event) => {
       event.preventDefault();
 
       const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-      if (event?.dataTransfer?.getData("application/reactflow")) {
-        const appData = JSON.parse(
-          event.dataTransfer.getData("application/reactflow")
-        );
-        const type = appData?.nodeType;
+      const appData = event.dataTransfer.getData("application/reactflow");
+      
+      if (!appData) return;
+      
+      try {
+        const parsedData = JSON.parse(appData);
+        const type = parsedData?.nodeType;
 
-        // check if the dropped element is valid
-        if (typeof type === "undefined" || !type) {
-          return;
-        }
+        if (!type) return;
 
         const position = reactFlowInstance.project({
           x: event.clientX - reactFlowBounds.left,
@@ -87,13 +74,18 @@ export const PipelineUI = () => {
           id: nodeID,
           type,
           position,
-          data: getInitNodeData(nodeID, type),
+          data: {
+            ...getInitNodeData(nodeID, type),
+            onRemove: handleRemoveNode,
+          },
         };
 
         addNode(newNode);
+      } catch (error) {
+        console.error("Error processing drop:", error);
       }
     },
-    [addNode, getNodeID, reactFlowInstance]
+    [reactFlowInstance, addNode, getNodeID, getInitNodeData, handleRemoveNode]
   );
 
   const onDragOver = useCallback((event) => {
@@ -101,52 +93,27 @@ export const PipelineUI = () => {
     event.dataTransfer.dropEffect = "move";
   }, []);
 
-  const handleRemoveNode = useCallback(
-    (nodeId) => {
-      console.log("Handling remove for node:", nodeId);
-      // Remove the node and its edges
-      const updatedNodes = nodes.filter((node) => node.id !== nodeId);
-      const updatedEdges = edges.filter(
-        (edge) => edge.source !== nodeId && edge.target !== nodeId
-      );
-
-      // Update the store directly
-      useStore.setState({
-        nodes: updatedNodes,
-        edges: updatedEdges,
-      });
-    },
-    [nodes, edges]
-  );
-
   return (
-    <>
-      <div ref={reactFlowWrapper} style={{width: "100wv", height: "70vh"}}>
-        <ReactFlow
-          nodes={nodes.map((node) => ({
-            ...node,
-            data: {
-              ...node.data,
-              onRemove: handleRemoveNode,
-            },
-          }))}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          onDrop={onDrop}
-          onDragOver={onDragOver}
-          onInit={setReactFlowInstance}
-          nodeTypes={nodeTypes}
-          proOptions={proOptions}
-          snapGrid={[gridSize, gridSize]}
-          connectionLineType="smoothstep"
-        >
-          <Background color="#aaa" gap={gridSize} />
-          <Controls />
-          <MiniMap />
-        </ReactFlow>
-      </div>
-    </>
+    <div ref={reactFlowWrapper} style={{ width: "100wv", height: "70vh" }}>
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+        onDrop={onDrop}
+        onDragOver={onDragOver}
+        onInit={setReactFlowInstance}
+        nodeTypes={nodeTypes}
+        proOptions={proOptions}
+        snapGrid={[gridSize, gridSize]}
+        connectionLineType="smoothstep"
+        fitView
+      >
+        <Background color="#aaa" gap={gridSize} />
+        <Controls />
+        <MiniMap />
+      </ReactFlow>
+    </div>
   );
 };
